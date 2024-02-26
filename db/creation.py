@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 DATA_PATH = '../results_analysis/example.tsv'
-DB_FILENAME = 'samples.db'
+DB_FILENAME = 'TFG.db'
 
 # Get the current working directory
 current_directory = os.getcwd()
@@ -20,10 +20,15 @@ try:
 
     # Create table if not exists
     cursor.execute('''CREATE TABLE IF NOT EXISTS samples 
-                   (sha_256 text PRIMARY KEY, 
-                   type text, 
-                   source text,
-                   first_bytes text)''')
+                (sha_256 text PRIMARY KEY, 
+                type text, 
+                source text,
+                first_bytes text)''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS comparison
+                    (filename1 text, 
+                    filename2 text, 
+                    distance integer,
+                    primary key (filename1, filename2))''')
     connection.commit()
 except sqlite3.Error as e:
     print(f"SQLite error: {e}")
