@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-DATA_PATH = '../results_analysis/example.tsv'
+DATA_PATH = '../results_analysis/first_bytes_extracted.tsv'
 DB_FILENAME = 'TFG.db'
 
 # Get the current working directory
@@ -21,7 +21,7 @@ try:
     # Create table if not exists
     cursor.execute('''CREATE TABLE IF NOT EXISTS samples 
                 (sha_256 text PRIMARY KEY, 
-                type text, 
+                malware_name text, 
                 source text,
                 first_bytes text)''')
     cursor.execute('''CREATE TABLE IF NOT EXISTS comparison

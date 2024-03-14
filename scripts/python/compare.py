@@ -1,10 +1,14 @@
 import Levenshtein
 import pandas as pd
 
-data_set = pd.read_csv('../../results_analysis/example.tsv', sep='\t')
+data_set = pd.read_csv('../../results_analysis/first_bytes_extracted.tsv', sep='\t')
 
 def compare_strings(string1, string2):
-    return Levenshtein.distance(string1, string2)
+    if pd.notnull(string1) and pd.notnull(string2):  # Verificar si ambos valores no son NaN
+        return Levenshtein.distance(string1, string2)
+    else:
+        #retornar un -
+        return -1
 
 result_list = []
 
