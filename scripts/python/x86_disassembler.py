@@ -3,7 +3,6 @@ import re
 import subprocess
 import sys
 
-# FILE = '/home/chispitas/Documents/TFG/samples/contagio_dump/graphSteel_Elephant/8e77118d819681fdc49ce3362d8bfd8f51f8469353396be7113c5a8978a171f6_graphsteel'
 NO_ARGUMENTS = ['27', '2f',
                 '37', '3f',
                 '60', '61', 
@@ -142,6 +141,7 @@ PREFIXES = SEGMENT_OVERRIDE + REX + OPERAND_SIZE_OVERRIDE + ADDRESS_SIZE_OVERRID
 
 ONE_USEFUL_BYTE = NO_ARGUMENTS + EAX_IV + AL_IB + ES + CS + SS + DS + EXTENDED_REGISTERS + SEGMENT_OVERRIDE + OPERAND_SIZE_OVERRIDE + ADDRESS_SIZE_OVERRIDE + LOCK_REPNE_REPNZ + IV + GV_EV_IV + IB + GV_EV_IB + YB_DX + YZ_DX + DX_XB + DX_XV + JB + GV_M + EAX_ECX + EAX_EDX + EAX_EBX + EAX_ESP + EAX_EBP + EAX_ESI + EAX_EDI + AP + FV + EAX_OV + OB_AL + OV_EAX + XB_YB + XV_YV + YB_AL + YV_EAX + AL_XB + EAX_XV + AL_IB + CL_IB + DL_IB + BL_IB + AH_IB + CH_IB + DH_IB + BH_IB + ECX_IV + EDX_IV + EBX_IV + ESP_IV + EBP_IV + ESI_IV + EDI_IV + IW + EB_1 + EV_1 + EB_CL + EV_CL + ESC + EAX_IB + IB_AL + IB_EAX + JZ + AL_DX + EAX_DX + DX_AL + DX_EAX
 TWO_USEFUL_BYTES = TWO_BYTES_OPCODE + EV_GV + GV_EV + EB_GB + GB_EB + EW_GW + EB_IB + EV_IV + EV_IB + EW_SW + SW_EW + EV + GV_MP + EB + INC_DEC
+
 def check_file_exists():
     """
     Check if a file exists.
@@ -242,7 +242,15 @@ def parse_instruction(instruction):
     return useful_bytes
           
 def total_useful_bytes(filtered_instructions):
-    # Concatenate all useful bytes
+    """
+    Concatenates the useful bytes from a list of filtered instructions.
+
+    Args:
+        filtered_instructions (list): A list of filtered instructions.
+
+    Returns:
+        str: A string containing the concatenated useful bytes.
+    """
     useful_bytes = ''
     for instruction in filtered_instructions:
         useful_bytes += instruction
