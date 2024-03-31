@@ -27,7 +27,9 @@ try:
     cursor.execute('''CREATE TABLE IF NOT EXISTS comparison
                     (filename1 text, 
                     filename2 text, 
-                    distance integer,
+                    levenshtein float,
+                    jaccard float,
+                    jarowinkler float,
                     primary key (filename1, filename2))''')
     connection.commit()
 except sqlite3.Error as e:

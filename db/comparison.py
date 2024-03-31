@@ -16,9 +16,9 @@ try:
     cursor = connection.cursor()
     with open(DATA_PATH) as f:
         for line in f:
-            filename1, filename2, distance = line.strip().split('\t')
+            filename1, filename2, levenshtein, jaccard, jarowinkler = line.strip().split('\t')
             try:
-                cursor.execute("INSERT INTO comparison VALUES (?, ?, ?)", (filename1, filename2, distance))
+                cursor.execute("INSERT INTO comparison VALUES (?, ?, ?, ?, ?)", (filename1, filename2, levenshtein, jaccard, jarowinkler))
             except sqlite3.IntegrityError:
                 print(f"Ya se ha comparado la pareja {filename1} y {filename2}")
 
