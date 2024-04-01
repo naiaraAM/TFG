@@ -32,8 +32,9 @@ try:
                     jarowinkler float,
                     primary key (filename1, filename2))''')
     connection.commit()
+    
 except sqlite3.Error as e:
     print(f"SQLite error: {e}")
+
 finally:
-    # Close the connection
     connection.close()

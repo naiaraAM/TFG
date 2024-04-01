@@ -10,24 +10,22 @@ current_directory = os.getcwd()
 # Create the full path to the database file
 DB_PATH = os.path.join(current_directory, DB_FILENAME)
 
-# use database
+# Use database
 try:
     connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
     with open(DATA_PATH) as f:
+        next(f) # Skip the header
         for line in f:
             filename1, filename2, levenshtein, jaccard, jarowinkler = line.strip().split('\t')
             try:
                 cursor.execute("INSERT INTO comparison VALUES (?, ?, ?, ?, ?)", (filename1, filename2, levenshtein, jaccard, jarowinkler))
             except sqlite3.IntegrityError:
-                print(f"Ya se ha comparado la pareja {filename1} y {filename2}")
-
-    # Commit the changes
+                print(f"{filename1} and {filename2} already exists in the database")
     connection.commit()
 
 except sqlite3.Error as e:
     print(f"SQLite error: {e}")
 
 finally:
-    # Close the connection
     connection.close()
