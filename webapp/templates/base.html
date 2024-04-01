@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}APT Malware analyzer{% endblock title %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* CSS for navigation bar */
+        .navbar {
+            background-color: #333; /* Change this to your desired background color */
+            overflow: hidden;
+            padding-top: 10px; /* Adjust as needed */
+            padding-bottom: 10px; /* Adjust as needed */
+            text-align: center; /* Center the navigation menu */
+        }
+    
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: inline-block; /* Change display to inline-block */
+            width: 100%; /* Ensure the full width of the navbar */
+        }
+    
+        .navbar ul li {
+            display: inline-block;
+        }
+    
+        .navbar ul li a {
+            display: block;
+            color: white; /* Change this to your desired text color */
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+    
+        .navbar ul li a:hover {
+            background-color: #555; /* Change this to your desired hover background color */
+            border-radius: 5px; /* Add rounded corners on hover */
+            transform: scale(1.1); /* Add zoom effect on hover */
+        }
+        
+        /* Estilo para el formulario */
+        .custom-form {
+            max-width: 400px; /* Ancho máximo del formulario */
+            margin: 0 auto; /* Centrar el formulario horizontalmente */
+            padding: 20px; /* Espaciado interno del formulario */
+            border: 1px solid #ccc; /* Borde del formulario */
+            border-radius: 10px; /* Borde redondeado del formulario */
+            background-color: #f8f9fa; /* Color de fondo del formulario */
+        }
+
+        .custom-form h2 {
+            margin-bottom: 20px; /* Espaciado inferior del título */
+            text-align: center; /* Centrar el título */
+        }
+
+        .custom-form .form-group {
+            margin-bottom: 20px; /* Espaciado entre grupos de formularios */
+        }
+
+        .custom-form .form-control {
+            border-radius: 5px; /* Borde redondeado de los campos de entrada */
+        }
+
+        .custom-form .btn-primary {
+            width: 100%; /* Ancho completo del botón */
+        }
+        
+        @media (max-width: 768px) {
+            .navbar ul {
+                display: block; /* Change to block for smaller screens */
+                text-align: center; /* Center the items for smaller screens */
+            }
+    
+            .navbar ul li {
+                display: block; /* Change to block for smaller screens */
+                margin-bottom: 10px; /* Add spacing between items for smaller screens */
+            }
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- Navigation Menu -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'upload_file' %}">Upload File</a></li>
+            <li><a href="{% url 'samples_index' %}">Display Data</a></li>
+            <!-- Add more menu items as needed -->
+        </ul>
+    </nav>
+
+    <div class="container">
+        {% block page_content %}{% endblock page_content %}
+    </div>
+</body>
+</html>

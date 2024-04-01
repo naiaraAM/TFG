@@ -1,0 +1,24 @@
+<!-- pages/tempates/pages/APT_sample_index.html -->
+
+{% extends 'base.html' %}
+
+{% block page_content %}
+<h1>
+    APT samples index
+</h1>
+<div class="row">
+{% for sample in samples %}
+    <div class="col-md-4">
+        <div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title">{{ sample.sha_256 }}</h5>
+                <p class="card-text">{{ sample.malware_name }}</p>
+                <a href="{% url 'sample_detail' sample.pk %}">
+                    View details...
+                </a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% endblock page_content %}

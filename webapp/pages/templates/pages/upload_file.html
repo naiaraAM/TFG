@@ -1,0 +1,16 @@
+<!-- pages/tempates/pages/upload_file.html-->
+{% extends 'base.html' %}
+
+{% block page_content %}
+<div class="custom-form">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="file" class="form-label">Upload File</label>
+            <input type="file" class="form-control" id="file" name="file" required>
+            <div class="invalid-feedback">Please choose a file.</div> <!-- Mensaje de error si no se selecciona un archivo -->
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock page_content %}
