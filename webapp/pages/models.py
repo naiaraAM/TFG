@@ -24,6 +24,7 @@ class Samples(models.Model):
     sha_256 = models.TextField(primary_key=True, blank=True, null=False)
     malware_name = models.TextField(blank=True, null=True)
     source = models.TextField(blank=True, null=True)
+    category = models.TextField(blank=True, null=True)
     first_bytes = models.TextField(blank=True, null=True)
 
     class Meta:

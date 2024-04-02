@@ -6,19 +6,34 @@
 <h1>
     APT samples index
 </h1>
+<div class="mb-3">
+    <div class="d-inline-block mr-2">
+        <form method="get" action="{% url 'samples_index' %}">
+            <button type="submit" class="btn btn-primary">Show all</button>
+        </form>
+    </div>
+    <div class="d-inline-block mr-2">
+        <form method="get" action="{% url 'show_original_samples' %}">
+            <button type="submit" class="btn btn-primary">Original dataset</button>
+        </form>
+    </div>
+    <div class="d-inline-block">
+        <form method="get" action="{% url 'show_user_uploaded_samples' %}">
+            <button type="submit" class="btn btn-primary">User uploaded</button>
+        </form>
+    </div>
+</div>
 <div class="row">
-{% for sample in samples %}
+    {% for sample in samples %}
     <div class="col-md-4">
         <div class="card mb-2">
             <div class="card-body">
                 <h5 class="card-title">{{ sample.sha_256 }}</h5>
                 <p class="card-text">{{ sample.malware_name }}</p>
-                <a href="{% url 'sample_detail' sample.pk %}">
-                    View details...
-                </a>
+                <a href="{% url 'sample_detail' sample.pk %}" class="btn btn-primary">View details</a>
             </div>
         </div>
     </div>
-{% endfor %}
+    {% endfor %}
 </div>
 {% endblock page_content %}

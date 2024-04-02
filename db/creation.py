@@ -23,6 +23,7 @@ try:
                 (sha_256 text PRIMARY KEY, 
                 malware_name text, 
                 source text,
+                category text,
                 first_bytes text)''')
     cursor.execute('''CREATE TABLE IF NOT EXISTS comparison
                     (filename1 text, 

@@ -17,9 +17,9 @@ try:
     with open(DATA_PATH) as f:
         next(f) # Skip the header
         for line in f:
-            sha_256, malware_name, source, first_bytes = line.strip().split('\t')
+            sha_256, malware_name, source, category, first_bytes = line.strip().split('\t')
             try:
-                cursor.execute("INSERT INTO samples VALUES (?, ?, ?, ?)", (sha_256, malware_name, source, first_bytes))
+                cursor.execute("INSERT INTO samples VALUES (?, ?, ?, ?, ?)", (sha_256, malware_name, source, category, first_bytes))
             except sqlite3.IntegrityError:
                 print(f"Sha_256 {sha_256} already exists in the database")
     connection.commit()
