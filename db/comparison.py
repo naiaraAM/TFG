@@ -1,14 +1,13 @@
 import sqlite3
 import os
 
-DATA_PATH = '../results_analysis/compare.tsv'
+script_dir = os.path.dirname(os.path.abspath(__file__))
+RELATIVE_DATA_PATH = '../../TFG/results_analysis/compare.tsv'
+DATA_PATH = os.path.abspath(os.path.join(script_dir, RELATIVE_DATA_PATH))
 DB_FILENAME = 'TFG.db'
 
-# Get the current working directory
-current_directory = os.getcwd()
-
 # Create the full path to the database file
-DB_PATH = os.path.join(current_directory, DB_FILENAME)
+DB_PATH = os.path.join(script_dir, DB_FILENAME)
 
 # Use database
 try:
@@ -19,7 +18,7 @@ try:
         for line in f:
             filename1, filename2, levenshtein, jaccard, jarowinkler = line.strip().split('\t')
             try:
-                cursor.execute("INSERT INTO comparison VALUES (?, ?, ?, ?, ?)", (filename1, filename2, levenshtein, jaccard, jarowinkler))
+                cursor.execute("INSERT INTO comparison (filename1, filename2, levenshtein, jaccard, jarowinkler) VALUES (?, ?, ?, ?, ?)", (filename1, filename2, levenshtein, jaccard, jarowinkler))
             except sqlite3.IntegrityError:
                 print(f"{filename1} and {filename2} already exists in the database")
     connection.commit()

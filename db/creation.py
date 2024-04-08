@@ -1,14 +1,15 @@
 import sqlite3
 import os
 
-DATA_PATH = '../results_analysis/first_bytes_extracted.tsv'
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+RELATIVE_DATA_PATH = '../../TFG/results_analysis/first_bytes_extracted.tsv'
+
+DATA_PATH = os.path.abspath(os.path.join(script_dir, RELATIVE_DATA_PATH))
 DB_FILENAME = 'TFG.db'
 
-# Get the current working directory
-current_directory = os.getcwd()
-
 # Create the full path to the database file
-DB_PATH = os.path.join(current_directory, DB_FILENAME)
+DB_PATH = os.path.join(script_dir, DB_FILENAME)
 
 # Check if the database file exists, create it if not
 if not os.path.exists(DB_PATH):
@@ -26,12 +27,13 @@ try:
                 category text,
                 first_bytes text)''')
     cursor.execute('''CREATE TABLE IF NOT EXISTS comparison
-                    (filename1 text, 
-                    filename2 text, 
-                    levenshtein float,
-                    jaccard float,
-                    jarowinkler float,
-                    primary key (filename1, filename2))''')
+                (id integer primary key autoincrement,
+                filename1 text, 
+                filename2 text, 
+                levenshtein float,
+                jaccard float,
+                jarowinkler float,
+                unique(filename1, filename2))''')
     connection.commit()
     
 except sqlite3.Error as e:
