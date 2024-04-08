@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import os
 import re
 import subprocess
@@ -227,7 +229,7 @@ def parse_instruction(instruction):
         num_useful_bytes = parse_bytes(instruction[0:2])
         if num_useful_bytes == 1: # Useful part of the instruction is the first byte
             useful_bytes = instruction[0:2]
-        if num_useful_bytes == 2: # Useful part of the instruction is the first two bytes
+        elif num_useful_bytes == 2: # Useful part of the instruction is the first two bytes
             useful_bytes = instruction[0:4]
         elif num_useful_bytes == -1: # Prefix, need to take next byte
             num_useful_bytes = parse_bytes(instruction[2:4])
@@ -256,7 +258,6 @@ def total_useful_bytes(filtered_instructions):
         useful_bytes += instruction
     return useful_bytes
 
-  
 if __name__ == '__main__':
     filename = check_file_exists()
         
@@ -268,4 +269,3 @@ if __name__ == '__main__':
         useful_part_instructions.append(parse_instruction(bytes_found[i]))
         #print(f'Instruction: [{bytes_found[i]}], useful part: [{useful_part_instructions[i]}]')
     print(total_useful_bytes(useful_part_instructions))
-       

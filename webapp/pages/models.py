@@ -9,15 +9,17 @@ from django.db import models
 
 
 class Comparison(models.Model):
+    id = models.AutoField(primary_key=True)
     filename1 = models.TextField(blank=True, null=True)
     filename2 = models.TextField(blank=True, null=True)
-    levenshtein = models.TextField(blank=True, null=True)  # This field type is a guess.
-    jaccard = models.TextField(blank=True, null=True)  # This field type is a guess.
-    jarowinkler = models.TextField(blank=True, null=True)  # This field type is a guess.
+    levenshtein = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    jaccard = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    jarowinkler = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'comparison'
+        unique_together = [['filename1', 'filename2']]
 
 
 class Samples(models.Model):
