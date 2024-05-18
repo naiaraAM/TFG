@@ -12,10 +12,35 @@ from django.db.models import Q
 
 
 def home(request):
+    """
+    Renders the home page of the web application.
+
+    This function runs scripts to initialize or update the database and then renders the 'home.html' template.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The rendered home page.
+
+    """
     run_scripts() # Run scripts to initialize/update the database
     return render(request, 'pages/home.html', {})
 
 def upload_file(request):
+    """
+    Handle file upload and perform analysis on the uploaded file.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The HTTP response object.
+
+    Raises:
+        None
+
+    """
     if request.method == 'POST' and request.FILES['file']:
         current_dir = os.path.dirname(os.path.realpath(__file__))
         uploaded_file = request.FILES['file']
@@ -39,7 +64,18 @@ def upload_file(request):
         return render(request, 'pages/upload_file.html')
     
 def samples_index(request):
+    """
+    View function for displaying the index page of samples.
 
+    This function retrieves all the samples from the database and passes them to the template
+    for rendering. The rendered page will display a list of samples.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The HTTP response object containing the rendered HTML page.
+    """
     samples_data = Samples.objects.all()
     context = {
         "samples": samples_data
@@ -47,10 +83,22 @@ def samples_index(request):
     return render(request, 'pages/APT_sample_index.html', context)
 
 def sample_detail(request, pk):
-    sample_data = get_object_or_404(Samples, pk=pk)
-    # print nomber of fields in sample_data
-    
+    """
+    View function for displaying the details of a sample.
 
+    Args:
+        request (HttpRequest): The HTTP request object.
+        pk (int): The primary key of the sample.
+
+    Returns:
+        HttpResponse: The HTTP response object containing the rendered template.
+
+    Raises:
+        Http404: If the sample with the given primary key does not exist in the database.
+        HttpResponseBadRequest: If no comparison data is found in the database.
+
+    """
+    sample_data = get_object_or_404(Samples, pk=pk) 
     comparison_data = Comparison.objects.filter(filename1=pk) | Comparison.objects.filter(filename2=pk)
     if not comparison_data.exists():
         return HttpResponseBadRequest("Data not found in the database.")
@@ -70,10 +118,34 @@ def sample_detail(request, pk):
     return render(request, 'pages/APT_sample_detail.html', context)
 
 def heatmaps(request):
+    """
+    Generate and display heatmaps.
+
+    This function generates a heatmap and renders it on the 'heatmaps.html' template.
+
+    Parameters:
+    - request: The HTTP request object.
+
+    Returns:
+    - A rendered HTML response containing the heatmap.
+
+    """
     create_heatmap()
     return render(request, 'pages/heatmaps.html')
 
 def show_original_samples(request):
+    """
+    View function to display the original dataset samples.
+
+    This function retrieves the samples from the database that belong to the 'Original dataset' category
+    and renders them in the 'APT_sample_index.html' template.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The HTTP response object containing the rendered template with the sample data.
+    """
     sample_data = Samples.objects.filter(category='Original dataset')
     context = {
         "samples": sample_data
@@ -81,6 +153,15 @@ def show_original_samples(request):
     return render(request, 'pages/APT_sample_index.html', context)
 
 def show_user_uploaded_samples(request):
+    """
+    Retrieves and displays user uploaded samples.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The HTTP response object containing the rendered template.
+    """
     sample_data = Samples.objects.filter(category='User uploaded')
     context = {
         "samples": sample_data
@@ -88,6 +169,20 @@ def show_user_uploaded_samples(request):
     return render(request, 'pages/APT_sample_index.html', context)
 
 def get_sorted_comparison_values(comparison_values, sort, order):
+    """
+    Sorts the comparison values based on the specified sort and order.
+
+    Args:
+        comparison_values (list): The list of comparison values to be sorted.
+        sort (str): The sorting criteria. Possible values are 'filename', 'levenshtein', 'jaccard',
+                    'jarowinkler', 'arithmetic_mean', and 'geometric_mean'.
+        order (str): The sorting order. Possible values are 'asc' for ascending order and 'desc' for
+                     descending order.
+
+    Returns:
+        list: The sorted comparison values.
+
+    """
     if sort == 'filename':
         key_func = lambda x: x['filename']
     elif sort == 'levenshtein':
@@ -110,10 +205,28 @@ def get_sorted_comparison_values(comparison_values, sort, order):
         return comparison_values  # Return unchanged if no sort is specified
 
 def get_comparison_data_by_pk(pk):
+    """
+    Retrieve comparison data by primary key.
+
+    Args:
+        pk (int): The primary key of the comparison data.
+
+    Returns:
+        QuerySet: A queryset containing the comparison data filtered by the given primary key.
+    """
     comparison_data = Comparison.objects.filter(filename1=pk) | Comparison.objects.filter(filename2=pk)
     return comparison_data
 
 def get_arithmetic_mean(comparison_values):
+    """
+    Calculates the arithmetic mean of the comparison values.
+
+    Args:
+        comparison_values (dict): A dictionary containing the comparison values.
+
+    Returns:
+        float: The arithmetic mean of the comparison values.
+    """
     values = {
         'levenshtein': comparison_values['levenshtein'],
         'jaccard': comparison_values['jaccard'],
@@ -122,6 +235,16 @@ def get_arithmetic_mean(comparison_values):
     return (values['levenshtein'] + values['jaccard'] + values['jarowinkler']) / 3
 
 def get_geometric_mean(comparison_values):
+    """
+    Calculate the geometric mean of the given comparison values.
+
+    Parameters:
+    comparison_values (dict): A dictionary containing the comparison values for different metrics.
+
+    Returns:
+    float: The geometric mean of the comparison values.
+
+    """
     values = {
         'levenshtein': comparison_values['levenshtein'],
         'jaccard': comparison_values['jaccard'],
@@ -130,6 +253,17 @@ def get_geometric_mean(comparison_values):
     return (float(values['levenshtein']) * float(values['jaccard']) * float(values['jarowinkler'])) ** (1/3)
 
 def process_comparison_data(comparison_data, pk):
+    """
+    Process the comparison data and calculate the means for each entry.
+
+    Args:
+        comparison_data (list): A list of comparison data entries.
+        pk (str): The primary key value used for comparison.
+
+    Returns:
+        list: A list of dictionaries containing the processed comparison values.
+
+    """
     comparison_values = []
     
     for entry in comparison_data:
@@ -163,6 +297,15 @@ def process_comparison_data(comparison_data, pk):
     return comparison_values
 
 def histogram_data(pk):
+    """
+    Retrieve the arithmetic mean and geometric mean values from comparison data.
+
+    Args:
+        pk (int): The primary key of the comparison data.
+
+    Returns:
+        tuple: A tuple containing two lists - arithmetic mean and geometric mean values.
+    """
     comparison_data = get_comparison_data_by_pk(pk)
     comparison_values = process_comparison_data(comparison_data, pk)
     arthmetic_mean = [entry['arithmetic_mean'] for entry in comparison_values]
@@ -171,6 +314,18 @@ def histogram_data(pk):
     return arthmetic_mean, geometric_mean
 
 def create_histogram(pk):
+    """
+    Create histograms for the arithmetic mean and geometric mean of comparison values.
+
+    Parameters:
+    - pk (str): The primary key used for the plot title and image filenames.
+
+    Returns:
+    - None
+
+    This function retrieves data for the histogram, generates histograms for the arithmetic mean and geometric mean,
+    and saves the histograms as images in the specified directory.
+    """
     # Retreive data for histogram
     arthmetic_mean, geometric_mean = histogram_data(pk)
 
@@ -221,6 +376,9 @@ def create_histogram(pk):
 
 
 def run_scripts():
+    """
+    Runs various scripts for processing malware information, comparing data, and performing database operations.
+    """
     current_dir = os.path.dirname(os.path.realpath(__file__))
     process_malware_path = os.path.abspath(os.path.join(current_dir, '..', '..', 'scripts', 'bash', 'process_basic_info.sh'))
     subprocess.run([process_malware_path], shell=True)
@@ -233,19 +391,59 @@ def run_scripts():
     comparison_path = os.path.abspath(os.path.join(current_dir, '..', '..', 'db', 'comparison.py'))
     subprocess.run(['python3', comparison_path])
 
+import hashlib
+
 def generate_hash(data):
+    """
+    Generate a SHA-256 hash for the given data.
+
+    Args:
+        data (str): The data to be hashed.
+
+    Returns:
+        str: The SHA-256 hash of the data.
+    """
     return hashlib.sha256(data.encode('utf-8')).hexdigest()
 
 def load_previous_hash(file_path):
+    """
+    Load the previous hash from a file.
+
+    Args:
+        file_path (str): The path to the file containing the previous hash.
+
+    Returns:
+        str: The previous hash read from the file.
+
+    """
     if os.path.exists(file_path):
         with open(file_path, 'r') as f:
             return f.read().strip()
 
 def save_current_hash(file_path, hash_value):
+    """
+    Saves the given hash value to the specified file path.
+
+    Args:
+        file_path (str): The path of the file to save the hash value to.
+        hash_value (str): The hash value to be saved.
+
+    Returns:
+        None
+    """
     with open(file_path, 'w') as f:
         f.write(hash_value)
 
 def check_hash(filenames):
+    """
+    Check if the current hash of the filenames matches the previous hash.
+
+    Args:
+        filenames (list): A list of filenames.
+
+    Returns:
+        bool: True if the current hash matches the previous hash, False otherwise.
+    """
     current_dir = os.path.dirname(os.path.realpath(__file__))
     hash_file_path = os.path.join(current_dir, '..', 'static', 'samples_hash.txt')
     filenames = list(Samples.objects.values_list('sha_256', flat=True))
@@ -257,6 +455,15 @@ def check_hash(filenames):
 
 
 def create_heatmap():
+    """
+    Create heatmaps of arithmetic and geometric values based on pair data.
+
+    This function retrieves pair data from the database and calculates the arithmetic and geometric means
+    for each pair of filenames. It then generates heatmaps using the calculated values and saves them as images.
+
+    Returns:
+        None
+    """
     filenames = list(Samples.objects.values_list('sha_256', flat=True))
     dataset_size = len(filenames)
     
