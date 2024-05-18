@@ -175,7 +175,6 @@ def get_bytes(filename):
 
     Returns:
         list: A list of bytes found in the file.
-
     """
     command = f"pedis --entrypoint -i 10 {filename}"
     output_pedis = subprocess.run(command, shell=True, stdout=subprocess.PIPE).stdout.decode('utf-8')
@@ -223,9 +222,9 @@ def parse_instruction(instruction):
     """
     length = len(instruction)
     useful_bytes = ''
-    if length / 2  == 1: # One byte instruction / no arguments
+    if (length / 2) == 1: # One byte instruction / no arguments
         useful_bytes = instruction
-    elif length / 2 > 1:
+    elif (length / 2) > 1:
         num_useful_bytes = parse_bytes(instruction[0:2])
         if num_useful_bytes == 1: # Useful part of the instruction is the first byte
             useful_bytes = instruction[0:2]
@@ -267,5 +266,4 @@ if __name__ == '__main__':
     
     for i in range(num_instructions):
         useful_part_instructions.append(parse_instruction(bytes_found[i]))
-        #print(f'Instruction: [{bytes_found[i]}], useful part: [{useful_part_instructions[i]}]')
     print(total_useful_bytes(useful_part_instructions))

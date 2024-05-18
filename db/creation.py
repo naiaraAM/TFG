@@ -1,9 +1,11 @@
+#!/usr/bin/python3
+
 import sqlite3
 import os
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-RELATIVE_DATA_PATH = '../../TFG/results_analysis/first_bytes_extracted.tsv'
+RELATIVE_DATA_PATH = '../../TFG/results_analysis/sample_basic_info.tsv'
 
 DATA_PATH = os.path.abspath(os.path.join(script_dir, RELATIVE_DATA_PATH))
 DB_FILENAME = 'TFG.db'
@@ -25,7 +27,9 @@ try:
                 malware_name text, 
                 source text,
                 category text,
-                first_bytes text)''')
+                first_bytes text,
+                num_sections integer,
+                compiler text)''')
     cursor.execute('''CREATE TABLE IF NOT EXISTS comparison
                 (id integer primary key autoincrement,
                 filename1 text, 

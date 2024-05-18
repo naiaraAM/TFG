@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import sqlite3
 import os
 
@@ -20,7 +22,7 @@ try:
             try:
                 cursor.execute("INSERT INTO comparison (filename1, filename2, levenshtein, jaccard, jarowinkler) VALUES (?, ?, ?, ?, ?)", (filename1, filename2, levenshtein, jaccard, jarowinkler))
             except sqlite3.IntegrityError:
-                print(f"{filename1} and {filename2} already exists in the database")
+                pass
     connection.commit()
 
 except sqlite3.Error as e:

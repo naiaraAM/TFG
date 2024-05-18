@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./process_malware.sh
+./process_basic_info.sh
 cd ..
 cd python/
 python3 compare.py

@@ -1,14 +1,20 @@
 <!-- pages/templates/pages/APT_sample_detail.html -->
 
 {% extends 'base.html' %}
+{% load static %}
 
 {% block page_content %}
+<style>
+    .table a {
+        text-decoration: none;
+    }
+</style>
 <h1>{{ sample.filename }}</h1>
 <div class="row">
     <div class="col-md-4">
         <h5>About the sample:</h5>
         <br>
-        <h6>SHA 256:</h5>
+        <h6>SHA 256:</h6>
         <p>{{ sample.sha_256}}</p>
         <h6>Malware name:</h6>
         <p>{{ sample.malware_name }}</p>
@@ -18,6 +24,78 @@
         <p>{{ sample.category }}</p>
         <h6>First bytes:</h6>
         <p>{{ sample.first_bytes }}</p>
+        <h6>Number of sections:</h6>
+        <p>{{ sample.num_sections }}</p>
+        <h6>Compiler:</h6>
+        <p>{{ sample.compiler }}</p>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-6">
+        <img src="{% static 'images/' %}{{ sample.pk }}_arithmetic_histogram.png" alt="Arithmetic Histogram" class="img-fluid">
+    </div>
+    <div class="col-md-6">
+        <img src="{% static 'images/' %}{{ sample.pk }}_geometric_histogram.png" alt="Geometric Histogram" class="img-fluid">
+    </div>
+</div>
+
+<div class="table-responsive">
+    <h5>Comparison values</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Filename
+                    <a href="?sort=filename&order=asc">&#9652;</a>
+                    <a href="?sort=filename&order=desc">&#9662;</a>
+                </th>
+                <th>
+                    Levenshtein
+                    <a href="?sort=levenshtein&order=asc">&#9652;</a>
+                    <a href="?sort=levenshtein&order=desc">&#9662;</a>
+                </th>
+                <th>
+                    Jaccard
+                    <a href="?sort=jaccard&order=asc">&#9652;</a>
+                    <a href="?sort=jaccard&order=desc">&#9662;</a>
+                </th>
+                <th>
+                    Jarowinkler
+                    <a href="?sort=jarowinkler&order=asc">&#9652;</a>
+                    <a href="?sort=jarowinkler&order=desc">&#9662;</a>
+                </th>
+                <th>
+                    Arithmetic mean
+                    <a href="?sort=arithmetic_mean&order=asc">&#9652;</a>
+                    <a href="?sort=arithmetic_mean&order=desc">&#9662;</a>
+                </th>
+                <th>
+                    Geometric mean
+                    <a href="?sort=geometric_mean&order=asc">&#9652;</a>
+                    <a href="?sort=geometric_mean&order=desc">&#9662;</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sample in comparison %}
+                <tr>
+                    <td>
+                        {% if sample.filename|length > 20 %}
+                            {{ sample.filename|slice:":7" }}...{{ sample.filename|slice:"-7:" }}
+                        {% else %}
+                            {{ sample.filename }}
+                        {% endif %}
+                    </td>                                      
+                    <td>{{ sample.levenshtein }}</td>
+                    <td>{{ sample.jaccard }}</td>
+                    <td>{{ sample.jarowinkler }}</td>
+                    <td>{{ sample.arithmetic_mean }}</td>
+                    <td>{{ sample.geometric_mean }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {% endblock page_content %}

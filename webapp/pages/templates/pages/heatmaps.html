@@ -1,0 +1,15 @@
+<!-- pages/tempates/pages/heatmaps.html-->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_content %}
+<div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh; gap: 20px;">
+    <div>
+        <img src="{% static 'images/' %}heatmap_arithmetic.png" alt="Arithmetic Heatmap" class="img-fluid" style="width: 100%; height: auto;">
+    </div>
+    <div>
+        <img src="{% static 'images/' %}heatmap_geometric.png" alt="Geometric Heatmap" class="img-fluid" style="width: 100%; height: auto;">
+    </div>
+</div>
+{% endblock page_content %}
