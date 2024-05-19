@@ -67,7 +67,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         },
-    },
+    }
 ]
 
 WSGI_APPLICATION = 'webapp.wsgi.application'
@@ -79,12 +79,11 @@ WSGI_APPLICATION = 'webapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/home/chispitas/Documents/TFG/db/TFG.db',
+        'NAME': '../db/TFG.db', # Path to the database
+        'OPTIONS': {
+            'timeout': 20,
+        },
     },
-    'TFG': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/home/chispitas/Documents/TFG/db/TFG.db',
-    }
 }
 
 
@@ -130,3 +129,9 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
