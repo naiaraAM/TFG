@@ -2,7 +2,8 @@
 
 
 ### Downloading the project
-`sudo apt install git -y`  
+`sudo apt install git -y`
+`git clone https://github.com/naiaraAM/TFG.git`  
 `git clone https://gitlab.com/HP-SCDS/Observatorio/2023-2024/packapttack/unican-packapttack.git`
 
 ### Installing the necessary dependencies
@@ -11,7 +12,7 @@
 
 
 ### Running the webapp
-`cd TFG/webapp`
+`cd webapp/`
 `./manage.py runserver`
 
 Open a browser on localhost:8000
