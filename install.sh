@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script installs the required dependencies for the project
+
 sudo apt install python3-django -y
 sudo apt install python3-magic -y
 sudo apt install python3-matplotlib -y

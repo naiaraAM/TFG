@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script executes the entire pipeline for the dataset
+
 ./process_basic_info.sh
 cd ..
 cd python/

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script processes the basic information of the samples in the dataset
+
 # Directory paths relative to the location of the script
 script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 root_directory="$script_directory/../../samples"

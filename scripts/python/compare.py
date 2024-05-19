@@ -19,6 +19,19 @@ SAVE_DATA_PATH = os.path.join(SAVE_DIR, 'compare.tsv')
 data_set = pd.read_csv(DATA_PATH, sep='\t')
 
 def compute_similarity(string1, string2):
+    """
+    Compute the similarity between two strings using different metrics.
+
+    Args:
+        string1 (str): The first string.
+        string2 (str): The second string.
+
+    Returns:
+        dict: A dictionary containing the similarity scores for different metrics.
+            The keys are 'levenshtein', 'jaccard', and 'jarowinkler'.
+            The values are the normalized similarity scores between 0 and 1.
+            If either string1 or string2 is NaN (null), all similarity scores will be -1.
+    """
     if pd.isnull(string1) or pd.isnull(string2):
         return {'levenshtein': -1, 'jaccard': -1, 'jarowinkler': -1}
     return {
