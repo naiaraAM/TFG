@@ -6,12 +6,12 @@
 `git clone https://gitlab.com/HP-SCDS/Observatorio/2023-2024/packapttack/unican-packapttack.git`
 
 ### Installing the necessary dependencies
-`cd TFG/`
+`cd TFG/`  
 `./install.sh`
 
 
 ### Running the webapp
-`cd TFG/webapp`
+`cd TFG/webapp`  
 `./manage.py runserver`
 
 Open a browser on localhost:8000
