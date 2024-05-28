@@ -1,47 +1,66 @@
 #!/bin/bash
 
-# This script processes the basic information of the samples in the dataset
+# This script processes the basic information of the samples in the dataset.
 
-# Directory paths relative to the location of the script
+# Relative path to the directory containing this script
 script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 root_directory="$script_directory/../../samples"
 output_directory="$script_directory/../../results_analysis"
 python_script_directory="$script_directory/../../scripts/python"
 
-output_file="sample_basic_info.tsv"
+output_file="$output_directory/sample_basic_info.tsv"
+temp_file="$output_directory/sample_basic_info.tmp"
 
-# If directory does not exist, create it
-if [ ! -d "$output_directory" ]; then
-    mkdir "$output_directory"
+# Create output directory if it does not exist
+mkdir -p "$output_directory"
+
+# Creates the output file if it does not exist
+if [ ! -f "$output_file" ]; then
+    echo -e "filename\tmalware_name\tsource\tcategory\tfirst_bytes\tnum_sections\tcompiler" > "$output_file"
 fi
 
-# If filename does not exist, create it
-if [ ! -f "$output_directory/$output_file" ]; then
-    touch "$output_directory/$output_file"
-    echo -e "filename\tmalware_name\tsource\tcategory\tfirst_bytes\tnum_sections\tcompiler" > "$output_directory/$output_file"
-fi
+# Function to process a file
+process_file() {
+    local file="$1"
+    local filename=$(basename "$file")
 
-find "$root_directory" -type f -print | while read -r file; do
-    filename=$(basename "$file")
-    # If filename already exists in the output file, skip processing, avoids overhead of processing
-    if grep -q "$filename" "$output_directory/$output_file"; then
-        continue
+    # If the filename is already in the output file, skip it
+    if grep -q "$filename" "$output_file"; then
+        return
     fi
 
-    malware_name=$(basename "$(dirname "$file")")
-    source=$(basename "$(dirname "$(dirname "$file")")")
-    category="Original dataset"
-    first_bytes=$(python3 "$python_script_directory/x86_disassembler.py" "$file")
-    num_sections=$(pescan "$file" | grep 'section count:' | cut -d':' -f2 | awk '{print $1}')
-    compiler=$(pestr "$file" | grep "COMPILER=" | awk -F'=' '{print $2}')
+    # Gather basic information
+    local malware_name=$(basename "$(dirname "$file")")
+    local source=$(basename "$(dirname "$(dirname "$file")")")
+    local category="Original dataset"
+    local first_bytes=$(python3 "$python_script_directory/x86_disassembler.py" "$file")
+    local num_sections=$(pescan "$file" | grep 'section count:' | cut -d':' -f2 | awk '{print $1}')
+    local compiler=$(pestr "$file" | grep "COMPILER=" | awk -F'=' '{print $2}')
+    
     if [ "$malware_name" == "webapp_uploads" ]; then
         source=$malware_name
         malware_name="Not defined"
         category="User uploaded"
     fi
-    # If compiler is empty, then compiler value to "Unknown"
+    
+    # If compiler is empty, set it to "Unknown"
     if [ -z "$compiler" ]; then
         compiler="Unknown"
     fi
-    echo -e "$filename\t$malware_name\t$source\t$category\t$first_bytes\t$num_sections\t$compiler" >> "$output_directory/$output_file"
-done
+    
+    echo -e "$filename\t$malware_name\t$source\t$category\t$first_bytes\t$num_sections\t$compiler" >> "$temp_file"
+}
+
+export -f process_file
+export output_file
+export temp_file
+export python_script_directory
+
+# Usar find y xargs para procesar archivos en paralelo
+find "$root_directory" -type f -print0 | xargs -0 -P $(nproc --all) -I {} bash -c 'process_file "{}"'
+
+# Merge temp file with output file
+if [ -f "$temp_file" ]; then
+    cat "$temp_file" >> "$output_file"
+    rm "$temp_file"
+fi
