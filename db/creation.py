@@ -23,7 +23,7 @@ try:
 
     # Create table if not exists
     cursor.execute('''CREATE TABLE IF NOT EXISTS samples 
-                (sha_256 text PRIMARY KEY, 
+                (filename text PRIMARY KEY, 
                 malware_name text, 
                 source text,
                 category text,

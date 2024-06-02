@@ -227,12 +227,7 @@ def get_arithmetic_mean(comparison_values):
     Returns:
         float: The arithmetic mean of the comparison values.
     """
-    values = {
-        'levenshtein': comparison_values['levenshtein'],
-        'jaccard': comparison_values['jaccard'],
-        'jarowinkler': comparison_values['jarowinkler']
-    }
-    return (values['levenshtein'] + values['jaccard'] + values['jarowinkler']) / 3
+    return comparison_values['arithmetic_mean']
 
 def get_geometric_mean(comparison_values):
     """
@@ -245,12 +240,7 @@ def get_geometric_mean(comparison_values):
     float: The geometric mean of the comparison values.
 
     """
-    values = {
-        'levenshtein': comparison_values['levenshtein'],
-        'jaccard': comparison_values['jaccard'],
-        'jarowinkler': comparison_values['jarowinkler']
-    }
-    return (float(values['levenshtein']) * float(values['jaccard']) * float(values['jarowinkler'])) ** (1/3)
+    return comparison_values['geometric_mean']
 
 def process_comparison_data(comparison_data, pk):
     """
@@ -441,7 +431,7 @@ def check_hash(filenames):
     """
     current_dir = os.path.dirname(os.path.realpath(__file__))
     hash_file_path = os.path.join(current_dir, '..', 'static', 'samples_hash.txt')
-    filenames = list(Samples.objects.values_list('sha_256', flat=True))
+    filenames = list(Samples.objects.values_list('filename', flat=True))
     combined_filenames = ''.join(filenames)
     current_hash = generate_hash(combined_filenames)
     previous_hash = load_previous_hash(hash_file_path)
@@ -459,7 +449,7 @@ def create_heatmap():
     Returns:
         None
     """
-    filenames = list(Samples.objects.values_list('sha_256', flat=True))
+    filenames = list(Samples.objects.values_list('filename', flat=True))
     dataset_size = len(filenames)
     
     current_dir = os.path.dirname(os.path.realpath(__file__))

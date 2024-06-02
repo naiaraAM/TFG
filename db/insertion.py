@@ -29,12 +29,12 @@ try:
         for line in f:
             if not line.strip():
                 continue
-            sha_256, malware_name, source, category, first_bytes, num_sections, compiler = line.strip().split('\t')
+            filename, malware_name, source, category, first_bytes, num_sections, compiler = line.strip().split('\t')
             try:
                 cursor.execute("INSERT INTO samples VALUES (?, ?, ?, ?, ?, ?, ?)",
-                               (sha_256, malware_name, source, category, first_bytes, num_sections, compiler))
+                               (filename, malware_name, source, category, first_bytes, num_sections, compiler))
             except sqlite3.IntegrityError:
-                print(f"Sha_256 {sha_256} already exists in the database") # Comment for no info
+                print(f"Sha_256 {filename} already exists in the database") # Comment for no info
 
     # Commit changes to the database
     connection.commit()

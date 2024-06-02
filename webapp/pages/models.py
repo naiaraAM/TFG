@@ -18,7 +18,7 @@ class Comparison(models.Model):
 
 
 class Samples(models.Model):
-    sha_256 = models.TextField(primary_key=True, blank=True, null=False)
+    filename = models.TextField(primary_key=True, blank=True, null=False)
     malware_name = models.TextField(blank=True, null=True)
     source = models.TextField(blank=True, null=True)
     category = models.TextField(blank=True, null=True)

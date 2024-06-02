@@ -28,7 +28,7 @@
     <div class="col-md-4">
         <div class="card mb-2">
             <div class="card-body">
-                <h5 class="card-title">{{ sample.sha_256 }}</h5>
+                <h5 class="card-title">{{ sample.filename }}</h5>
                 <p class="card-text">{{ sample.malware_name }}</p>
                 <a href="{% url 'sample_detail' sample.pk %}" class="btn btn-primary">View details</a>
             </div>
