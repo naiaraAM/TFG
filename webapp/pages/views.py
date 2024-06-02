@@ -272,26 +272,19 @@ def process_comparison_data(comparison_data, pk):
                 'filename': entry.filename2,
                 'levenshtein': entry.levenshtein,
                 'jaccard': entry.jaccard,
-                'jarowinkler': entry.jarowinkler
+                'jarowinkler': entry.jarowinkler,
+                'arithmetic_mean': entry.arithmetic_mean,
+                'geometric_mean': entry.geometric_mean
             }
         else:
             values = {
                 'filename': entry.filename1,
                 'levenshtein': entry.levenshtein,
                 'jaccard': entry.jaccard,
-                'jarowinkler': entry.jarowinkler
+                'jarowinkler': entry.jarowinkler,
+                'arithmetic_mean': entry.arithmetic_mean,
+                'geometric_mean': entry.geometric_mean
             }
-
-        # Calculate means
-        arithmetic_mean = get_arithmetic_mean(values)
-
-        # Redondear a dos decimales, si no tiene 2, rellevar con 0
-        values['arithmetic_mean'] = round(arithmetic_mean, 2)
-        values['arithmetic_mean'] = "{:.2f}".format(round(arithmetic_mean, 2))
-
-        geometric_mean = get_geometric_mean(values)
-        values['geometric_mean'] = "{:.2f}".format(round(geometric_mean, 2))
-
         comparison_values.append(values)
 
     return comparison_values
@@ -308,10 +301,12 @@ def histogram_data(pk):
     """
     comparison_data = get_comparison_data_by_pk(pk)
     comparison_values = process_comparison_data(comparison_data, pk)
-    arthmetic_mean = [entry['arithmetic_mean'] for entry in comparison_values]
+
+    # Get arithmetic and geometric mean values from model
+    arithmetic_mean = [entry['arithmetic_mean'] for entry in comparison_values]
     geometric_mean = [entry['geometric_mean'] for entry in comparison_values]
 
-    return arthmetic_mean, geometric_mean
+    return arithmetic_mean, geometric_mean
 
 def create_histogram(pk):
     """

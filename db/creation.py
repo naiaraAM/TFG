@@ -37,6 +37,8 @@ try:
                 levenshtein float,
                 jaccard float,
                 jarowinkler float,
+                arithmetic_mean float,
+                geometric_mean float,
                 unique(filename1, filename2))''')
     connection.commit()
     

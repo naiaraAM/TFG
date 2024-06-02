@@ -18,9 +18,9 @@ try:
     with open(DATA_PATH) as f:
         next(f) # Skip the header
         for line in f:
-            filename1, filename2, levenshtein, jaccard, jarowinkler = line.strip().split('\t')
+            filename1, filename2, levenshtein, jaccard, jarowinkler, arithmetic_mean, geometric_mean = line.strip().split('\t')
             try:
-                cursor.execute("INSERT INTO comparison (filename1, filename2, levenshtein, jaccard, jarowinkler) VALUES (?, ?, ?, ?, ?)", (filename1, filename2, levenshtein, jaccard, jarowinkler))
+                cursor.execute("INSERT INTO comparison (filename1, filename2, levenshtein, jaccard, jarowinkler, arithmetic_mean, geometric_mean) VALUES (?, ?, ?, ?, ?, ?, ?)", (filename1, filename2, levenshtein, jaccard, jarowinkler, arithmetic_mean, geometric_mean))
             except sqlite3.IntegrityError:
                 pass
     connection.commit()

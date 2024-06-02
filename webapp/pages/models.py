@@ -8,6 +8,8 @@ class Comparison(models.Model):
     levenshtein = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     jaccard = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     jarowinkler = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    arithmetic_mean = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    geometric_mean = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     class Meta:
         managed = False

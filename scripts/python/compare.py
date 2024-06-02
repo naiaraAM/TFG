@@ -21,30 +21,43 @@ data_set = pd.read_csv(DATA_PATH, sep='\t')
 
 def compute_similarity(pair):
     """
-    Compute the similarity between two strings using different metrics.
+    Compute the similarity between two files based on their first bytes.
 
-    Args:
-        pair (tuple): A tuple containing two filenames.
+    Parameters:
+    pair (tuple): A tuple containing the filenames of the two files to compare.
 
     Returns:
-        dict: A dictionary containing the similarity scores for different metrics.
-            The keys are 'levenshtein', 'jaccard', and 'jarowinkler'.
-            The values are the normalized similarity scores between 0 and 1.
-            If either string1 or string2 is NaN (null), all similarity scores will be -1.
+    dict: A dictionary containing the computed similarity measures between the two files.
+          The dictionary has the following keys:
+          - 'filename1': The filename of the first file.
+          - 'filename2': The filename of the second file.
+          - 'levenshtein': The normalized Levenshtein similarity between the first bytes of the two files.
+          - 'jaccard': The normalized Jaccard similarity between the first bytes of the two files.
+          - 'jarowinkler': The normalized Jaro-Winkler similarity between the first bytes of the two files.
+          - 'arithmetic_mean': The arithmetic mean of the Levenshtein, Jaccard, and Jaro-Winkler similarities.
+          - 'geometric_mean': The geometric mean of the Levenshtein, Jaccard, and Jaro-Winkler similarities.
     """
     filename1, filename2 = pair
     string1 = data_set[data_set['filename'] == filename1]['first_bytes'].values[0]
     string2 = data_set[data_set['filename'] == filename2]['first_bytes'].values[0]
 
     if pd.isnull(string1) or pd.isnull(string2):
-        return {'filename1': filename1, 'filename2': filename2, 'levenshtein': -1, 'jaccard': -1, 'jarowinkler': -1}
+        return {'filename1': filename1, 'filename2': filename2, 'levenshtein': -1, 'jaccard': -1, 'jarowinkler': -1, 'arithmetic_mean': -1, 'geometric_mean': -1}
+    levenshtein = td.levenshtein.normalized_similarity(string1, string2)
+    jaccard = td.jaccard.normalized_similarity(string1, string2)
+    jarowinkler = td.jaro_winkler.normalized_similarity(string1, string2)
+    arithmetic_mean = (levenshtein + jaccard + jarowinkler) / 3
+    geometric_mean = (levenshtein * jaccard * jarowinkler) ** (1/3)
+
 
     return {
         'filename1': filename1,
         'filename2': filename2,
-        'levenshtein': td.levenshtein.normalized_similarity(string1, string2),
-        'jaccard': td.jaccard.normalized_similarity(string1, string2),
-        'jarowinkler': td.jaro_winkler.normalized_similarity(string1, string2)
+        'levenshtein': levenshtein,
+        'jaccard': jaccard,
+        'jarowinkler': jarowinkler,
+        'arithmetic_mean': arithmetic_mean,
+        'geometric_mean': geometric_mean,
     }
 
 # Load existing data
