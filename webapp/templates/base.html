@@ -7,7 +7,7 @@
     <style>
         /* CSS for navigation bar */
         .navbar {
-            background-color: #333; /* Change this to your desired background color */
+            background-color: #333;
             overflow: hidden;
             padding-top: 10px; /* Adjust as needed */
             padding-bottom: 10px; /* Adjust as needed */
@@ -28,42 +28,42 @@
     
         .navbar ul li a {
             display: block;
-            color: white; /* Change this to your desired text color */
+            color: white;
             padding: 14px 16px;
             text-decoration: none;
         }
     
         .navbar ul li a:hover {
-            background-color: #555; /* Change this to your desired hover background color */
+            background-color: #555;
             border-radius: 5px; /* Add rounded corners on hover */
             transform: scale(1.1); /* Add zoom effect on hover */
         }
         
-        /* Estilo para el formulario */
+        /* Form style */
         .custom-form {
-            max-width: 400px; /* Ancho máximo del formulario */
-            margin: 0 auto; /* Centrar el formulario horizontalmente */
-            padding: 20px; /* Espaciado interno del formulario */
-            border: 1px solid #ccc; /* Borde del formulario */
-            border-radius: 10px; /* Borde redondeado del formulario */
-            background-color: #f8f9fa; /* Color de fondo del formulario */
+            max-width: 400px; /* Max width of the form */
+            margin: 0 auto; /* Horizontally center the form */
+            padding: 20px; /* Inner spacing for the form */
+            border: 1px solid #ccc; /* Form border */
+            border-radius: 10px; /* Rounded corners for the form */
+            background-color: #f8f9fa; /* Background color for the form */
         }
 
         .custom-form h2 {
-            margin-bottom: 20px; /* Espaciado inferior del título */
-            text-align: center; /* Centrar el título */
+            margin-bottom: 20px; /* Inner spacing for the title */
+            text-align: center; /* Center the title */
         }
 
         .custom-form .form-group {
-            margin-bottom: 20px; /* Espaciado entre grupos de formularios */
+            margin-bottom: 20px; /* Space between form fields */
         }
 
         .custom-form .form-control {
-            border-radius: 5px; /* Borde redondeado de los campos de entrada */
+            border-radius: 5px; /* Rounded corners for form fields */
         }
 
         .custom-form .btn-primary {
-            width: 100%; /* Ancho completo del botón */
+            width: 100%; /* Full width button */
         }
         
         @media (max-width: 768px) {
@@ -81,14 +81,12 @@
     
 </head>
 <body>
-    <!-- Navigation Menu -->
     <nav class="navbar">
         <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'upload_file' %}">Upload File</a></li>
             <li><a href="{% url 'samples_index' %}">Display Data</a></li>
             <li><a href="{% url 'heatmaps' %}">Heatmaps</a></li>
-            <!-- Add more menu items as needed -->
         </ul>
     </nav>
 
