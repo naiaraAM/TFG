@@ -16,7 +16,7 @@ os.makedirs(SAVE_DIR, exist_ok=True)
 
 SAVE_DATA_PATH = os.path.join(SAVE_DIR, 'compare.tsv')
 
-# Read the CSV file
+# Read the TSV file
 data_set = pd.read_csv(DATA_PATH, sep='\t')
 
 def compute_similarity(pair):

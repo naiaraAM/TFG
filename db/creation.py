@@ -5,9 +5,6 @@ import os
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-RELATIVE_DATA_PATH = '../../TFG/results_analysis/sample_basic_info.tsv'
-
-DATA_PATH = os.path.abspath(os.path.join(script_dir, RELATIVE_DATA_PATH))
 DB_FILENAME = 'TFG.db'
 
 # Create the full path to the database file
