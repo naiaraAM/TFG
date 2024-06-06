@@ -56,7 +56,7 @@ export output_file
 export temp_file
 export python_script_directory
 
-# Usar find y xargs para procesar archivos en paralelo
+# Usar find y xargs to process files in parallel
 find "$root_directory" -type f -print0 | xargs -0 -P $(nproc --all) -I {} bash -c 'process_file "{}"'
 
 # Merge temp file with output file
