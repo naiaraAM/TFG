@@ -376,7 +376,7 @@ def run_scripts():
     comparison_path = os.path.abspath(os.path.join(current_dir, '..', '..', 'db', 'comparison.py'))
     subprocess.run(['python3', comparison_path])
 
-import hashlib
+
 
 def generate_hash(data):
     """
