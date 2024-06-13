@@ -3,7 +3,7 @@
 
 ### Downloading the project
 `sudo apt install git -y`  
-`git clone https://gitlab.com/HP-SCDS/Observatorio/2023-2024/packapttack/unican-packapttack.git`  
+`git clone https://github.com/naiaraAM/TFG.git`
 
 ### Installing the necessary dependencies
 `cd TFG/`  
