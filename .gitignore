@@ -1,0 +1,4 @@
+samples/webapp_uploads/
+webapp/pages/*
+webapp/static/images/*
+webapp/webapp/__pycache__/*
